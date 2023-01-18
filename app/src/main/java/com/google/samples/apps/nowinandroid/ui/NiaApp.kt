@@ -72,6 +72,10 @@ import com.google.samples.apps.nowinandroid.feature.settings.R as settingsR
 import com.google.samples.apps.nowinandroid.feature.settings.SettingsDialog
 import com.google.samples.apps.nowinandroid.navigation.NiaNavHost
 import com.google.samples.apps.nowinandroid.navigation.TopLevelDestination
+import com.google.samples.apps.nowinandroid.navigation.TopLevelDestination.BOOKMARKS
+import com.google.samples.apps.nowinandroid.navigation.TopLevelDestination.FOR_YOU
+import com.google.samples.apps.nowinandroid.navigation.TopLevelDestination.INTERESTS
+import kotlinx.coroutines.delay
 
 @OptIn(
     ExperimentalMaterial3Api::class,
@@ -116,6 +120,10 @@ fun NiaApp(
                 SettingsDialog(
                     onDismiss = { appState.setShowSettingsDialog(false) }
                 )
+            }
+
+            LaunchedEffect(Unit) {
+                simulateFastNavigation(appState)
             }
 
             Scaffold(
@@ -186,6 +194,18 @@ fun NiaApp(
                     //  content doesn't display behind it.
                 }
             }
+        }
+    }
+}
+
+suspend fun simulateFastNavigation(appState: NiaAppState) {
+    delay(2000)
+    repeat(30) { i ->
+        delay(300) //Changing this to >400 makes the issue go away
+        when(i % 3) {
+            0 -> appState.navigateToTopLevelDestination(FOR_YOU)
+            1 -> appState.navigateToTopLevelDestination(BOOKMARKS)
+            2 -> appState.navigateToTopLevelDestination(INTERESTS)
         }
     }
 }

@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.nowinandroid.feature.bookmarks
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.nowinandroid.core.data.repository.UserDataRepository
@@ -38,6 +39,16 @@ class BookmarksViewModel @Inject constructor(
     private val userDataRepository: UserDataRepository,
     getSaveableNewsResources: GetUserNewsResourcesUseCase
 ) : ViewModel() {
+
+    init {
+        Log.d("NavigationIssue", "BookmarksViewModel init: $this")
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        Log.d("NavigationIssue", "BookmarksViewModel onCleared")
+    }
+
 
     val feedUiState: StateFlow<NewsFeedUiState> = getSaveableNewsResources()
         .filterNot { it.isEmpty() }

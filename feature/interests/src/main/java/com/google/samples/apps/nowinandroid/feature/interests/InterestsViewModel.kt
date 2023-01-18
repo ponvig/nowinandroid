@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.nowinandroid.feature.interests
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.nowinandroid.core.data.repository.UserDataRepository
@@ -35,6 +36,15 @@ class InterestsViewModel @Inject constructor(
     val userDataRepository: UserDataRepository,
     getFollowableTopics: GetFollowableTopicsUseCase,
 ) : ViewModel() {
+
+    init {
+        Log.d("NavigationIssue", "InterestsViewModel init: $this")
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        Log.d("NavigationIssue", "InterestsViewModel onCleared")
+    }
 
     val uiState: StateFlow<InterestsUiState> =
         getFollowableTopics(sortBy = TopicSortField.NAME).map(

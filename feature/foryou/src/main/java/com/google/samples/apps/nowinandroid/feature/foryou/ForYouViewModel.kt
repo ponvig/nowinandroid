@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.nowinandroid.feature.foryou
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.nowinandroid.core.data.repository.UserDataRepository
@@ -44,6 +45,15 @@ class ForYouViewModel @Inject constructor(
     private val getSaveableNewsResources: GetUserNewsResourcesUseCase,
     getFollowableTopics: GetFollowableTopicsUseCase
 ) : ViewModel() {
+
+    init {
+        Log.d("NavigationIssue", "ForYouViewModel init: $this")
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        Log.d("NavigationIssue", "ForYouViewModel onCleared")
+    }
 
     private val shouldShowOnboarding: Flow<Boolean> =
         userDataRepository.userData.map { !it.shouldHideOnboarding }
